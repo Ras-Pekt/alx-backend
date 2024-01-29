@@ -80,7 +80,7 @@ class Server:
         hyper_dict["page"] = page
         hyper_dict["data"] = self.get_page(page, page_size)
         hyper_dict["next_page"] = page + 1 if page < total_pages else None
-        hyper_dict["prev_page"] = page - 1 if page > 0 else None
+        hyper_dict["prev_page"] = page - 1 if page > 1 else None
         hyper_dict["total_pages"] = total_pages
 
         return hyper_dict
