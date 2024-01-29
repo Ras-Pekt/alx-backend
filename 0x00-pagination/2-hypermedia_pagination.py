@@ -73,13 +73,12 @@ class Server:
         assert int(page_size) > 0
 
         dataset_len = len(self.dataset())
-        start, end = index_range(page, page_size)
         total_pages = math.ceil(dataset_len / page_size)
         hyper_dict = {}
 
         hyper_dict["page_size"] = page_size
         hyper_dict["page"] = page
-        hyper_dict["data"] = self.__dataset[start:end]
+        hyper_dict["data"] = self.get_page(page, page_size)
         hyper_dict["next_page"] = page + 1 if page < total_pages else None
         hyper_dict["prev_page"] = page - 1 if page > 0 else None
         hyper_dict["total_pages"] = total_pages
