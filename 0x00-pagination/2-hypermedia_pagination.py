@@ -5,7 +5,7 @@ and returns a tuple of size two containing a start index and an end index
 """
 import csv
 import math
-from typing import List
+from typing import List, Dict
 
 
 def index_range(page: int, page_size: int) -> (int, int):
@@ -58,16 +58,30 @@ class Server:
                 return dataset[start:end]
             else:
                 return self.__dataset[start:end]
-
-            # start, end = index_range(page, page_size)
-            # dataset = self.dataset()
-            # dataset_rows = []
-            # try:
-            #     while start < end:
-            #         dataset_rows.append(dataset[start])
-            #         start += 1
-            #     return (dataset_rows)
-            # except IndexError:
-            #     return []
         else:
             raise AssertionError
+
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
+        """
+        takes two integer arguments page and page_size
+        and returns a dictionary
+        """
+        if not isinstance(page, int) and not isinstance(page_size, int):
+            raise AssertionError
+
+        assert int(page) > 0
+        assert int(page_size) > 0
+
+        dataset_len = len(self.dataset())
+        start, end = index_range(page, page_size)
+        total_pages = math.ceil(dataset_len / page_size)
+        hyper_dict = {}
+
+        hyper_dict["page_size"] = page_size
+        hyper_dict["page"] = page
+        hyper_dict["data"] = self.__dataset[start:end]
+        hyper_dict["next_page"] = page + 1 if page < total_pages else None
+        hyper_dict["prev_page"] = page - 1 if page > 0 else None
+        hyper_dict["total_pages"] = total_pages
+
+        return hyper_dict
