@@ -3,10 +3,10 @@
 from base_caching import BaseCaching
 
 
-class FIFOCache(BaseCaching):
+class LIFOCache(BaseCaching):
     """
     a class that inherits from BaseCaching
-    and is a caching system with a FIFO limit
+    and is a caching system with a LIFO limit
     """
     def __init__(self):
         """
@@ -21,10 +21,9 @@ class FIFOCache(BaseCaching):
         if key and item:
             self.cache_data[key] = item
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                for k in self.cache_data.keys():
-                    print(f"DISCARD: {k}")
-                    del self.cache_data[k]
-                    break
+                k = list(self.cache_data.keys())[-2]
+                print(f"DISCARD: {k}")
+                del self.cache_data[k]
 
     def get(self, key):
         """
